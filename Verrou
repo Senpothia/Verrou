@@ -410,7 +410,7 @@ e2 = digitalRead(I2);   // Lecture contact NF
 if (e1=!actif & e2==actif){    // Etat relais OK
 
   return true;
-  } else {			// Etat relais NOK
+  } else {      // Etat relais NOK
   
     return false;
   }
@@ -460,7 +460,7 @@ void IN_OFF(){   // Ouverture par coupure alimentation
 
 //////////////////////////////////////////////////////////////////
 
-void TEL_OFF(boolean actif){  // Ouverture par coupure d'alimentation côté TEL
+void TEL_OFF(){  // Ouverture par coupure d'alimentation côté TEL
   
   digitalWrite(R5, LOW);
   }
@@ -496,7 +496,7 @@ void BP(boolean actif){
 
   if (actif){                     //   Commande ouverture porte par BP
   digitalWrite(R4, HIGH);
- } else { 			  // En situation de BP relaché
+ } else {         // En situation de BP relaché
     
      digitalWrite(R4, LOW);
     
@@ -507,7 +507,7 @@ void BP(boolean actif){
 ////////////////////////////////////////////////////////////////////
 
 void fermeture(boolean etat){
-
+// porte fermée -> etat = true, arg testRelais = true (relais actif), arg testCP = true (cp attirée)
 
     boolean test = testRelais(etat);
     if (!test){
@@ -531,7 +531,8 @@ void fermeture(boolean etat){
 void test1(){  // Test sans alimentation en mode BP
 
     modeBP(true);
-    IN_OFF(true);
+    IN_OFF();
+    BP(false);
     
 /**
     boolean test = testRelais(false);
@@ -556,6 +557,7 @@ void test2(){
 
 modeBP(true);
 IN_12(true);
+BP(false);
 fermeture(true);
 
 
@@ -568,7 +570,8 @@ fermeture(true);
 void test3(){
 
 modeBP(true);
-IN_OFF();
+IN_12(true);
+BP(true);
 fermeture(false);
 
 }
@@ -580,6 +583,7 @@ void test4(){
 
 modeBP(true);
 IN_12(false);
+BP(false);
 fermeture(true);
 
 }
@@ -590,7 +594,8 @@ fermeture(true);
 void test5(){
 
 modeBP(true);
-IN_OFF();
+IN_12(false);
+BP(true);
 fermeture(false);
 
 
@@ -602,6 +607,7 @@ void test6(){
 
 modeBP(false);
 IN_OFF();
+TEL_OFF();
 fermeture(false);
 
 
@@ -614,6 +620,7 @@ void test7(){
 
 modeBP(false);
 IN_12(true);
+TEL_12(true);
 fermeture(true);
 
 }
@@ -624,7 +631,8 @@ fermeture(true);
 void test8(){
 
 modeBP(false);
-IN_OFF();
+IN_12(true);
+TEL_OFF();
 fermeture(false);
 
 }
@@ -632,5 +640,78 @@ fermeture(false);
 /////////////////////////////////////////////////////////////////////////////
 
 
+void test9(){
+
+modeBP(false);
+IN_12(true);
+TEL_12(true);
+fermeture(true);
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+void test10(){
+
+modeBP(false);
+IN_OFF();
+TEL_12(true);
+fermeture(false);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void test11(){
+
+modeBP(false);
+IN_12(false);
+TEL_12(false);
+fermeture(true);
+
+}
 
 
+/////////////////////////////////////////////////////////////////////////////
+
+void test12(){
+
+modeBP(false);
+IN_12(false);
+TEL_OFF();
+fermeture(false);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void test13(){
+
+modeBP(false);
+IN_12(false);
+TEL_12(false);
+fermeture(true);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void test14(){
+
+modeBP(false);
+IN_OFF();
+TEL_12(false);
+fermeture(false);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void test51(){
+
+modeBP(false);
+IN_OFF();
+TEL_OFF();
+fermeture(false);
+
+}
