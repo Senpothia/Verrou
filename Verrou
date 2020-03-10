@@ -1,0 +1,525 @@
+const int R1=22;  // Relais 1
+const int R2=23;  // Relais 2
+const int R3=29;  // Relais 3
+const int R4=39;  // Relais 4
+const int R5=49;  // Relais 5
+const int R6=51;  // Relais 6
+const int R7=53;  // Relais 7
+const int R8=52;  // Relais 8
+
+const int I1 = 9; // Input 1
+const int I2 = 8; // Input 2
+const int I3 = 7; // Input 3
+const int I4 = 6; // Input 4
+const int I5 = 5; // Input 5
+const int I6 = 4; // Input 6
+const int I7 = 3; // Input 7
+const int I8 = 2; // Input 8
+
+const int buzzer = 10;  // Buzzer
+
+const int an0 = 0;  // Entrée analogique 0
+const int an1 = 1;  // Entrée analogique 1
+const int an2 = 2;  // Entrée analogique 2
+const int an3 = 3;  // Entrée analogique 3
+const int an4 = 4;  // Entrée analogique 4
+const int an5 = 5;  // Entrée analogique 5
+const int an6 = 6;  // Entrée analogique 6
+const int an7 = 7;  // Entrée analogique 7
+
+int e0;  // Lecture entrée digitale 0
+int e1;  // Lecture entrée digitale 1
+int e2;  // Lecture entrée digitale 2
+int e3;  // Lecture entrée digitale 3
+int e4;  // Lecture entrée digitale 4
+int e5;  // Lecture entrée digitale 5
+int e6;  // Lecture entrée digitale 6
+int e7;  // Lecture entrée digitale 7
+
+int volt0 = 0;  // Lecture entrée analogique 0
+int volt1 = 0;  // Lecture entrée analogique 1
+int volt2 = 0;  // Lecture entrée analogique 2
+int volt3 = 0;  // Lecture entrée analogique 3
+int volt4 = 0;  // Lecture entrée analogique 4
+int volt5 = 0;  // Lecture entrée analogique 5
+int volt6 = 0;  // Lecture entrée analogique 6
+int volt7 = 0;  // Lecture entrée analogique 7
+
+bool ACT_BUZZ = false;  // Etat buzzer
+
+//******************************************************************
+
+int front = 1;
+boolean start = false;
+unsigned long tempoDepart = 0;
+boolean testEnCours = false;
+int numTest = 1;
+
+void setup() {
+
+pinMode(R1, OUTPUT);
+pinMode(R2, OUTPUT);
+pinMode(R3, OUTPUT);
+pinMode(R4, OUTPUT);
+pinMode(R5, OUTPUT);
+pinMode(R6, OUTPUT);
+pinMode(R7, OUTPUT);
+pinMode(R8, OUTPUT);
+       
+ 
+pinMode(I1, INPUT);
+pinMode(I2, INPUT);
+pinMode(I3, INPUT);
+pinMode(I4, INPUT);
+pinMode(I5, OUTPUT);   
+pinMode(I6, OUTPUT);
+pinMode(I7, INPUT);
+pinMode(I8, INPUT);
+
+pinMode(buzzer,OUTPUT);
+
+Serial.begin(9600);
+}
+
+void loop() {
+//****************************************************************************
+// Conditions initiales
+
+digitalWrite(R1, LOW);  
+digitalWrite(R2, LOW);  
+digitalWrite(R3, LOW);  
+digitalWrite(R4, LOW);  
+digitalWrite(R5, LOW);  
+digitalWrite(R6, LOW);  
+digitalWrite(R7, LOW);  
+digitalWrite(R8, LOW);  
+digitalWrite(I5, LOW);  // Led verte éteinte
+digitalWrite(I6, LOW);  // Led rouge éteinte
+
+//****************************************************************************
+// Démarrage 
+
+// Boucle d'attente ordre de démarrage
+
+while (!start){  // start = false
+  
+  e3 = digitalRead(I3);    // Lecture entrée I3
+
+  if (e3 == 0){
+       delay(1); //
+       e3 = digitalRead(I3);  
+
+       if (e3 == 0) {
+        start = !start;    // start = true
+       }
+  }
+}   // Fin boucle attente de démarrage
+
+
+
+  // Lancement du test
+
+  Serial.println("Lancement du test!");
+ //******************************************************************************
+ // Signal sonore
+digitalWrite(I5, HIGH);  
+digitalWrite(I6, HIGH); 
+Serial.println("I5, I6 HIGH");
+tempoDepart = millis();
+for (int i=0; i<3; i++){
+  
+      while( ( millis() - tempoDepart ) <= 200+i*300 ) {
+       //Serial.println("Buzzer actif!");
+       digitalWrite(buzzer,0); // état bas
+       delayMicroseconds(125); //
+       digitalWrite(buzzer,1); // état haut
+       delayMicroseconds(125); // 
+     
+      }
+       tempoDepart = millis();
+      delay(300);
+     // Serial.println(i);
+}
+   Serial.println("Buzzer inactif!");
+  //digitalWrite(R8, HIGH);  // Test OK
+  //delay(1000);
+  // Fin signal sonore
+  
+//******************************************************************************  
+// Début de la séquence de test
+
+Serial.println("Début séquence de test!");
+testEnCours = true;
+digitalWrite(I5, LOW);  
+digitalWrite(I6, LOW); 
+
+/**
+ * 
+ *     TEST DU CABLAGE EN MODE BP
+
+
+Serial.println("I5, I6 LOW");
+
+digitalWrite(R1, HIGH);
+digitalWrite(R2, HIGH);
+ e4 = digitalRead(I4);  
+
+ if (e4==0){
+
+  Serial.println("CP collée");
+ } else {Serial.println("CP non collée");}
+
+delay(150);
+ e1 = digitalRead(I1);  
+ e2 = digitalRead(I2);  
+
+ if (e1==0 && e2 == 1){
+
+  Serial.println("relais actif");
+ } else {Serial.println("relais non actif");}
+
+ */
+/**
+// TEST DU CABLAGE EN MODE TEL
+
+digitalWrite(R7, HIGH);    // Mode TEL ACTIF - Position cavalier JP1
+digitalWrite(R3, HIGH);    // Mode TEL ACTIF 
+digitalWrite(R5, HIGH);    // Enytrée TEL en 12V
+digitalWrite(R6, HIGH);    // Enytrée TEL en 48V
+digitalWrite(R1, HIGH);    // Entrée d'alimentation en 12V 
+digitalWrite(R2, HIGH);    // Entrée d'alimentation en 48V 
+
+*/
+
+//-------------------------------------------------------------------------------
+
+
+// Test en mode contrôle d'accès (BP)
+ while(testEnCours){
+
+    switch(numTest) {
+
+      //   TEST EN MODE BP  en 12 V
+      
+      case 1:  // Mode BP hors alimentation
+                test1();
+                Serial.println("Fin test1");
+                testEnCours = false; // Pour tester uniquement
+                break;
+/*
+      case 2:  // Mode BP sous 12V
+                test2();
+                break;
+
+      case 3:  // Mode BP hors alimentation
+                test1();
+                break;
+
+      case 4:  // Mode BP sous 12V
+                test2();
+                break;
+
+      case 5:  // Mode BP alimentation 12V et activation BP
+                test1();
+                break;
+
+      //   TEST EN MODE BP  en 48 V
+      
+      case 6:  // Mode BP hors alimentation
+                test1();
+                break;
+
+      case 7:  // Mode BP sous 48V
+                test2();
+                break;
+
+      case 8:  // Mode BP hors alimentation
+                test1();
+                break;
+
+      case 9:  // Mode BP sous 48V
+                test2();
+                break;
+
+      case 10:  // Mode BP alimentation 48V et activation BP
+                test1();
+                break;
+
+       //   TEST EN MODE TELECOMMANDE
+
+       //  Mode Télécommande sous 12V
+       
+      case 11:  // Mode TEL sous 12V  avec TEL en 12V
+                test4();
+                break;
+
+      case 12:  // Coupure Alimentation 12V  avec TEL en 12V
+                test5();
+                break;
+
+      case 13:  // Coupure Alimentation 12V  et coupure TEL en 12V
+                test5();
+                break;
+      
+      case 14:  // Mode TEL sous 12V  avec TEL en 12V
+                test4();
+                break;
+
+       case 15:  // Mode TEL sous 12V  et coupure TEL en 12V
+                test4();
+                break;
+      
+      //  Mode Télécommande sous 48V
+
+        case 6:  // Mode TEL sous 48V  avec TEL en 48V
+                test4();
+                break;
+
+      case 7:  // Coupure Alimentation 48V  avec TEL en 48V
+                test5();
+                break;
+
+      case 7:  // Coupure Alimentation 48V  et coupure TEL en 48V
+                test5();
+                break;
+      
+      case 6:  // Mode TEL sous 48V  avec TEL en 48V
+                test4();
+                break;
+
+       case 8:  // Mode TEL sous 48V  et coupure TEL en 48V
+                test4();
+                break;
+                
+      */
+      }   // Fin switch
+  }       // Fin while
+
+  if (!testEnCours){   //   
+
+    alerte_NOK();
+    conforme(false);
+  }  else {
+
+    conforme(true);
+    
+    }
+
+
+Serial.println("Svp, acquitez test pour finir");
+    //  Acquitement test - Séquence de sortie
+  while (start){
+  
+  e3 = digitalRead(I3);    // Lecture entrée I3
+
+  if (e3 == 0){
+       delay(1); //
+       e3 = digitalRead(I3);  
+
+       if (e3 == 0) {
+        start = !start;   // start = false
+       }
+  }
+  
+ 
+  }
+  
+/**  
+ *   TEST CABLAGE DU RELAIS
+ digitalWrite(R4, HIGH);
+ delay(150);
+ e1 = digitalRead(I1);  
+ e2 = digitalRead(I2);  
+
+ if (e1==0 && e2 == 1){
+
+  Serial.println("relais actif");
+ } else {Serial.println("relais non actif");}
+
+ */
+ 
+  Serial.println("Fin de test!");
+  numTest=1;
+ 
+  delay(1000);
+  
+  
+ 
+   
+} // Fin loop
+
+
+/////////////////   DEFINITION FONCTIONS EXTERNES   /////////////////////////
+
+
+//*******************************************************************************
+
+
+
+//************************************************************************************
+
+//////////////////////////////////////////////////////////////
+
+
+void alerte_NOK(){
+  
+Serial.println("!! ALERTE NOK !!");
+
+tempoDepart = millis();
+for (int i=0; i<5; i++){
+  
+      while( ( millis() - tempoDepart ) <= 500+i*300 ) {
+       //Serial.println("Buzzer actif!");
+       digitalWrite(buzzer,0); // état bas
+       delayMicroseconds(125); //
+       digitalWrite(buzzer,1); // état haut
+       delayMicroseconds(125); // 
+     
+      }
+       tempoDepart = millis();
+      delay(300);
+     // Serial.println(i);
+}
+   Serial.println("Buzzer inactif!");
+  
+  }
+
+/////////////////////////////////////////////////////////////////
+
+void conforme(boolean OK){  // Activation led verte 
+
+if (!OK){   // Test NOK
+digitalWrite(I5, LOW);  
+digitalWrite(I6, HIGH); } else {   // Test OK
+
+digitalWrite(I5, HIGH);  
+digitalWrite(I6, LOW); 
+  
+  }
+  
+  }
+
+/////////////////////////////////////////////////////////////////
+
+ boolean testRelais (boolean actif){
+
+// relais actif -> e1 = false, e2=true
+delay(200);
+e1 = digitalRead(I1);   // Lecture contact NO
+e2 = digitalRead(I2);   // Lecture contact NF
+if (e1=!actif & e2==actif){
+
+  return true;
+  } else {
+  
+    return false;
+  }
+  }
+
+////////////////////////////////////////////////////////////////////
+
+boolean testCP( boolean attraction){
+// CP attirée = attraction = true
+
+  delay(200);
+  e4 = digitalRead(I4);   // Lecture position CP
+
+ if (e4 == attraction) {
+   return true;
+  } else { 
+    return false;
+    }
+  
+  }
+
+
+
+
+///////////////////////////////////////////////////////////////////
+
+
+void modeBP(boolean actif){
+
+  if (actif){
+digitalWrite(R3, LOW);
+digitalWrite(R7, LOW);} else{
+  
+digitalWrite(R3, HIGH);
+digitalWrite(R7, HIGH);
+  }
+   
+  }
+
+///////////////////////////////////////////////////////////////////
+
+void IN_OFF(boolean actif){   // Ouverture par coupure alimentation
+  
+  digitalWrite(R1, LOW);
+  }
+
+
+//////////////////////////////////////////////////////////////////
+
+void TEL_OFF(boolean actif){  // Ouverture par coupure d'alimentation côté TEL
+  
+  digitalWrite(R5, LOW);
+  }
+
+///////////////////////////////////////////////////////////////////
+
+void IN_12(boolean actif){
+
+  if (actif){                     // Tension 12V appliquée
+  digitalWrite(R1, HIGH);
+  digitalWrite(R2, LOW);} else {  // tension 48V appliquée
+    
+     digitalWrite(R1, HIGH);
+     digitalWrite(R2, HIGH);}
+    }
+  
+
+///////////////////////////////////////////////////////////////////
+
+void TEL_12(boolean actif){
+
+  if (actif){                     // Tension 12V appliquée
+  digitalWrite(R5, HIGH);
+  digitalWrite(R6, LOW);} else {  // tension 48V appliquée
+    
+     digitalWrite(R5, HIGH);
+     digitalWrite(R6, HIGH);}
+    }
+  
+///////////////////////////////////////////////////////////////////
+
+void BP(boolean actif){
+
+  if (actif){                     // Tension 12V appliquée
+  digitalWrite(R4, HIGH);
+ } else {  // tension 48V appliquée
+    
+     digitalWrite(R4, LOW);
+    
+    }
+  
+  }
+
+////////////////////////////////////////////////////////////////////
+
+void test1(){  // Test sans alimentation en mode BP
+
+    modeBP(true);
+    IN_OFF(true);
+    
+    boolean test = testRelais(false);
+    if (!test){
+     testEnCours = false;
+      }
+    boolean cp = testCP(false);
+    if (!cp){
+      testEnCours = false;}
+      
+    if (testEnCours){
+      numTest++;
+    }
+}
