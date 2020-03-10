@@ -407,10 +407,10 @@ digitalWrite(I6, LOW);
 delay(200);
 e1 = digitalRead(I1);   // Lecture contact NO
 e2 = digitalRead(I2);   // Lecture contact NF
-if (e1=!actif & e2==actif){
+if (e1=!actif & e2==actif){    // Etat relais OK
 
   return true;
-  } else {
+  } else {			// Etat relais NOK
   
     return false;
   }
@@ -452,7 +452,7 @@ digitalWrite(R7, HIGH);
 
 ///////////////////////////////////////////////////////////////////
 
-void IN_OFF(boolean actif){   // Ouverture par coupure alimentation
+void IN_OFF(){   // Ouverture par coupure alimentation
   
   digitalWrite(R1, LOW);
   }
@@ -492,11 +492,11 @@ void TEL_12(boolean actif){
   
 ///////////////////////////////////////////////////////////////////
 
-void BP(boolean actif){
+void BP(boolean actif){           
 
-  if (actif){                     // Tension 12V appliquée
+  if (actif){                     //   Commande ouverture porte par BP
   digitalWrite(R4, HIGH);
- } else {  // tension 48V appliquée
+ } else { 			  // En situation de BP relaché
     
      digitalWrite(R4, LOW);
     
@@ -506,11 +506,34 @@ void BP(boolean actif){
 
 ////////////////////////////////////////////////////////////////////
 
+void fermeture(boolean etat){
+
+
+    boolean test = testRelais(etat);
+    if (!test){
+     testEnCours = false;
+      }
+    boolean cp = testCP(etat);
+    if (!cp){
+      testEnCours = false;}
+      
+    if (testEnCours){   // Incrémentation pour test suivant 
+      numTest++;
+    }
+
+
+}
+
+
+
+////////////////////////////////////////////////////////////////////
+
 void test1(){  // Test sans alimentation en mode BP
 
     modeBP(true);
     IN_OFF(true);
     
+/**
     boolean test = testRelais(false);
     if (!test){
      testEnCours = false;
@@ -522,4 +545,92 @@ void test1(){  // Test sans alimentation en mode BP
     if (testEnCours){
       numTest++;
     }
+*/
+    fermeture(false);
 }
+
+//////////////////////////////////////////////////////////////////////
+
+
+void test2(){
+
+modeBP(true);
+IN_12(true);
+fermeture(true);
+
+
+}
+
+
+//////////////////////////////////////////////////////////////////////
+
+
+void test3(){
+
+modeBP(true);
+IN_OFF();
+fermeture(false);
+
+}
+
+
+////////////////////////////////////////////////////////////////////////
+
+void test4(){
+
+modeBP(true);
+IN_12(false);
+fermeture(true);
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////
+
+void test5(){
+
+modeBP(true);
+IN_OFF();
+fermeture(false);
+
+
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+void test6(){
+
+modeBP(false);
+IN_OFF();
+fermeture(false);
+
+
+}
+
+
+///////////////////////////////////////////////////////////////////////////
+
+void test7(){
+
+modeBP(false);
+IN_12(true);
+fermeture(true);
+
+}
+
+//////////////////////////////////////////////////////////////////////////
+
+
+void test8(){
+
+modeBP(false);
+IN_OFF();
+fermeture(false);
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+
