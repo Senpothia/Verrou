@@ -212,37 +212,37 @@ digitalWrite(R2, HIGH);    // Entrée d'alimentation en 48V
                 break;
 
       case 3:  // Mode BP hors alimentation
-                test1();
+                test3();
                 break;
 
       case 4:  // Mode BP sous 12V
-                test2();
+                test4();
                 break;
 
       case 5:  // Mode BP alimentation 12V et activation BP
-                test1();
+                test5();
                 break;
 
       //   TEST EN MODE BP  en 48 V
       
       case 6:  // Mode BP hors alimentation
-                test1();
+                test6();
                 break;
 
       case 7:  // Mode BP sous 48V
-                test2();
+                test7();
                 break;
 
       case 8:  // Mode BP hors alimentation
-                test1();
+                test8();
                 break;
 
       case 9:  // Mode BP sous 48V
-                test2();
+                test9();
                 break;
 
       case 10:  // Mode BP alimentation 48V et activation BP
-                test1();
+                test10();
                 break;
 
        //   TEST EN MODE TELECOMMANDE
@@ -250,45 +250,26 @@ digitalWrite(R2, HIGH);    // Entrée d'alimentation en 48V
        //  Mode Télécommande sous 12V
        
       case 11:  // Mode TEL sous 12V  avec TEL en 12V
-                test4();
+                test11();
                 break;
 
       case 12:  // Coupure Alimentation 12V  avec TEL en 12V
-                test5();
+                test12();
                 break;
 
       case 13:  // Coupure Alimentation 12V  et coupure TEL en 12V
-                test5();
+                test13();
                 break;
       
       case 14:  // Mode TEL sous 12V  avec TEL en 12V
-                test4();
+                test14();
                 break;
 
        case 15:  // Mode TEL sous 12V  et coupure TEL en 12V
-                test4();
+                test15();
                 break;
-      
-      //  Mode Télécommande sous 48V
-
-        case 6:  // Mode TEL sous 48V  avec TEL en 48V
-                test4();
-                break;
-
-      case 7:  // Coupure Alimentation 48V  avec TEL en 48V
-                test5();
-                break;
-
-      case 7:  // Coupure Alimentation 48V  et coupure TEL en 48V
-                test5();
-                break;
-      
-      case 6:  // Mode TEL sous 48V  avec TEL en 48V
-                test4();
-                break;
-
-       case 8:  // Mode TEL sous 48V  et coupure TEL en 48V
-                test4();
+                
+        default:
                 break;
                 
       */
@@ -707,7 +688,7 @@ fermeture(false);
 
 /////////////////////////////////////////////////////////////////////////////
 
-void test51(){
+void test15(){
 
 modeBP(false);
 IN_OFF();
