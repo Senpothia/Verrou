@@ -366,11 +366,11 @@ digitalWrite(R2, HIGH);    // Entrée d'alimentation en 48V
 Serial.println("valeur variable testENCours en sortie de swich() :"); 
 Serial.println(testEnCours);
   if (!testEnCours){   //   
+    
+    conforme(false);
     if (sonorite){
        alerte_NOK();
       }
-   
-    conforme(false);
   }  else {
 
     conforme(true);
@@ -437,7 +437,7 @@ void alerte_NOK(){
 Serial.println("!! ALERTE NOK !!");
 
 tempoDepart = millis();
-for (int i=0; i<5; i++){
+for (int i=0; i<3; i++){
   
       while( ( millis() - tempoDepart ) <= 500+i*300 ) {
        //Serial.println("Buzzer actif!");
