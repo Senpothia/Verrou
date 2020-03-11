@@ -747,4 +747,7 @@ void pap(boolean actif){
     }
   
   }
+
+  Serial.println("numero étape: ");
+  Serial.println(numTest);
 }
