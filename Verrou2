@@ -377,7 +377,8 @@ Serial.println(testEnCours);
     
     }
 
-
+digitalWrite(R1, LOW);
+digitalWrite(R5, LOW);
 Serial.println("Svp, acquitez test pour finir");
     //  Acquitement test - Séquence de sortie
   while (start){
@@ -561,7 +562,6 @@ if (!actif){    // Etat relais OK
     }  else return false;
  
   } 
-
   
   }
 
